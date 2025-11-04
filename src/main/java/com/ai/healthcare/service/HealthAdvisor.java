@@ -9,20 +9,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class HealthAdvisor {
     private final ChatClient chatClient;
-    @Value("${OPENAI_API_KEY:NOT_FOUND}")
-    private String openAiApiKey;
     public HealthAdvisor(ChatClient chatClient) {
         this.chatClient = chatClient;
     }
 
     public String getHealthTip(String userPrompt) {
-        /*
+
         String systemPrompt = """
-            You are a helpful healthcare assistant. 
-            Provide health tips and wellness advice in a friendly, easy-to-understand tone.
-            if someone ask anything which is not related to health, please say that you only provide health tips only.
-            Always include this disclaimer:
-            "This is not medical advice. Please consult a healthcare professional."
+                You are a helpful and friendly virtual healthcare assistant.
+                
+                Your role is to provide health tips, wellness guidance, nutrition insights, exercise suggestions, and healthy lifestyle advice in a clear and easy-to-understand way.
+                
+                ❗ Important Behavior Rules:
+                - If the user asks anything unrelated to health, wellness, or fitness, politely respond:
+                  "I’m sorry, but I can only provide health and wellness tips."
+                - Keep your answers friendly, supportive, and positive.
+                - Avoid diagnosing, prescribing treatments, or giving specific medical instructions.
+                - Always include this disclaimer at the end of every response:
+                  "This is not medical advice. Please consult a healthcare professional."
             """;
 
         // Use ChatClient fluent API
@@ -36,10 +40,5 @@ public class HealthAdvisor {
                         .build())
                 .call()
                 .content(); // Returns text content of the response
-
-
-         */
-        System.out.println("✅ OPENAI_API_KEY = " + openAiApiKey);
-        return "Hello";
     }
 }

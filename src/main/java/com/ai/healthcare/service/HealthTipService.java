@@ -16,7 +16,6 @@ import java.util.Map;
 @Service
 public class HealthTipService {
     private final RestClient restClient;
-    ChatClient chatClient;
 
     @Value("${OPENAI_API_KEY:NOT_FOUND}")
     private String openAiApiKey;
@@ -35,7 +34,7 @@ public class HealthTipService {
         System.out.println("✅ OPENAI_API_KEY = " + openAiApiKey);
     }
     public String getHealthTip(String userPrompt) {
-/*
+
         String systemPrompt = """
                     You are a helpful healthcare assistant. 
                     Provide health tips and wellness advice in a friendly, easy-to-understand tone.
@@ -64,8 +63,6 @@ public class HealthTipService {
         Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
 
         return (String) message.get("content");
-  */
-        return "Hello";
     }
 
 }
