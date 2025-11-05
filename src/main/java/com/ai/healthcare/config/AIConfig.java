@@ -24,6 +24,9 @@ public class AIConfig {
     @Value("${spring.ai.openai.api-key}")
     private String openAiApiKey;
 
+    @Value("${spring.ai.openai.chat.option.model}")
+    private String openAiModel;
+
     /**
      * Define the ChatModel bean (OpenAI GPT model)
      */
@@ -58,7 +61,7 @@ public class AIConfig {
 
         // Default model configuration
         OpenAiChatOptions options = OpenAiChatOptions.builder()
-                .model("gpt-4o-mini")
+                .model(openAiModel)
                 .temperature(0.7)
                 .build();
 

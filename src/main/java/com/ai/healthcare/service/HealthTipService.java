@@ -1,9 +1,5 @@
 package com.ai.healthcare.service;
 
-import com.openai.client.OpenAIClient;
-import com.openai.client.okhttp.OpenAIOkHttpClient;
-import jakarta.annotation.PostConstruct;
-import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,7 +16,8 @@ public class HealthTipService {
     @Value("${OPENAI_API_KEY:NOT_FOUND}")
     private String openAiApiKey;
 
-
+    @Value("${spring.ai.openai.chat.option.model}")
+    private String openAiModel;
 
     @Value("${openai.api.url}")
     private String apiUrl;
@@ -29,10 +26,6 @@ public class HealthTipService {
         this.restClient = RestClient.create();
     }
 
-    @PostConstruct
-    public void printKey() {
-        System.out.println("✅ OPENAI_API_KEY = " + openAiApiKey);
-    }
     public String getHealthTip(String userPrompt) {
 
         String systemPrompt = """

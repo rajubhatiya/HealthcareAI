@@ -41,6 +41,10 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-starter-model-vertex-ai-gemini</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.openai</groupId>
 			<artifactId>openai-java</artifactId>
 			<version>4.0.0</version>

@@ -2,13 +2,16 @@ package com.ai.healthcare.service;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.ChatOptions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HealthAdvisor {
+    @Value("${spring.ai.openai.chat.option.model}")
+    private String openAiModel;
+
     private final ChatClient chatClient;
+
     public HealthAdvisor(ChatClient chatClient) {
         this.chatClient = chatClient;
     }
@@ -34,7 +37,7 @@ public class HealthAdvisor {
                 .system(systemPrompt)
                 .user(userPrompt)
                 .options(ChatOptions.builder()
-                        .model("gpt-4o-mini") // or use model configured in ChatModel bean
+                        .model(openAiModel) // or use model configured in ChatModel bean
                         .temperature(0.5)
                         .maxTokens(200)
                         .build())
