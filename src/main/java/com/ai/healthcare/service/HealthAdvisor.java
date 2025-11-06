@@ -1,6 +1,7 @@
 package com.ai.healthcare.service;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,33 +21,64 @@ public class HealthAdvisor {
         this.gemini = gemini;
     }
 
-
     public String getHealthTip(String userPrompt) {
-
         String systemPrompt = """
-                You are a helpful and friendly virtual healthcare assistant.
+                    You are a helpful and friendly virtual healthcare assistant.
                 
-                Your role is to provide health tips, wellness guidance, nutrition insights, exercise suggestions, and healthy lifestyle advice in a clear and easy-to-understand way.
+                    Your role is to provide health tips, wellness guidance, nutrition insights, exercise suggestions, and healthy lifestyle advice in a clear and easy-to-understand way.
                 
-                ❗ Important Behavior Rules:
-                - If the user asks anything unrelated to health, wellness, or fitness, politely respond:
-                  "I’m sorry, but I can only provide health and wellness tips."
-                - Keep your answers friendly, supportive, and positive.
-                - Avoid diagnosing, prescribing treatments, or giving specific medical instructions.
-                - Always include this disclaimer at the end of every response:
-                  "This is not medical advice. Please consult a healthcare professional."
-            """;
+                    ❗ Important Behavior Rules:
+                    - If the user asks anything unrelated to health, wellness, or fitness, politely respond:
+                      "I'm sorry, but I can only provide health and wellness tips."
+                    - Keep your answers friendly, supportive, and positive.
+                    - Avoid diagnosing, prescribing treatments, or giving specific medical instructions.
+                    - Always include this disclaimer at the end of every response:
+                      "This is not medical advice. Please consult a healthcare professional."
+                """;
 
-        // Use ChatClient fluent API
         return openAi.prompt()
                 .system(systemPrompt)
                 .user(userPrompt)
                 .options(ChatOptions.builder()
-                        .model(openAiModel) // or use model configured in ChatModel bean
+                        .model(openAiModel)
                         .temperature(0.5)
                         .maxTokens(200)
                         .build())
                 .call()
-                .content(); // Returns text content of the response
+                .content();
+    }
+
+    public String getHealthTipWithTokenUsage(String userPrompt) {
+        String systemPrompt = """
+                    You are a helpful and friendly virtual healthcare assistant.
+                
+                    Your role is to provide health tips, wellness guidance, nutrition insights, exercise suggestions, and healthy lifestyle advice in a clear and easy-to-understand way.
+                
+                    ❗ Important Behavior Rules:
+                    - If the user asks anything unrelated to health, wellness, or fitness, politely respond:
+                      "I'm sorry, but I can only provide health and wellness tips."
+                    - Keep your answers friendly, supportive, and positive.
+                    - Avoid diagnosing, prescribing treatments, or giving specific medical instructions.
+                    - Always include this disclaimer at the end of every response:
+                      "This is not medical advice. Please consult a healthcare professional."
+                """;
+
+        ChatResponse result = openAi.prompt()
+                .system(systemPrompt)
+                .user(userPrompt)
+                .options(ChatOptions.builder()
+                        .model(openAiModel)
+                        .temperature(0.5)
+                        .maxTokens(200)
+                        .build())
+                .call()
+                .chatResponse();
+
+        if (result != null) {
+            System.out.println("Tokens used metadata : " + result.getMetadata());
+        }
+
+        assert result != null;
+        return result.getResult().getOutput().getText();
     }
 }

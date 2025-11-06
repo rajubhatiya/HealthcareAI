@@ -20,4 +20,9 @@ public class HealthTipsController {
         String reply = healthAdvisor.getHealthTip(prompt.getMessage());
         return new HealthResponse(reply);
     }
+    @PostMapping("/askWithTokenUsage")
+    public HealthResponse askAIWithTokenUsage(@RequestBody UserPrompt prompt) {
+        String reply = healthAdvisor.getHealthTipWithTokenUsage(prompt.getMessage());
+        return new HealthResponse(reply);
+    }
 }
