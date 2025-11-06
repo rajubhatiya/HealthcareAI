@@ -57,5 +57,4 @@ public class HealthTipService {
 
         return (String) message.get("content");
     }
-
 }

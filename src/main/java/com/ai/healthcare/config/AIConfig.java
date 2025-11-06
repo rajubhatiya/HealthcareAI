@@ -1,22 +1,12 @@
 package com.ai.healthcare.config;
 
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.model.ApiKey;
+import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.openai.OpenAiChatModel;
-import org.springframework.ai.openai.OpenAiChatOptions;
-import org.springframework.ai.openai.api.OpenAiApi;
+import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.client.ResponseErrorHandler;
-import org.springframework.http.client.ClientHttpResponse;
-
-import java.io.IOException;
 
 @Configuration
 public class AIConfig {
@@ -26,57 +16,27 @@ public class AIConfig {
 
     @Value("${spring.ai.openai.chat.option.model}")
     private String openAiModel;
+    @Value("${spring.ai.vertex.chat.option.model}")
+    private String vertexAiGeminiModel;
 
-    /**
-     * Define the ChatModel bean (OpenAI GPT model)
-     */
+    // Chat client using OpenAI
     @Bean
-    public ChatModel chatModel(RestClient.Builder restClientBuilder, WebClient.Builder webClientBuilder) {
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-
-        // Simple no-op error handler (optional)
-        ResponseErrorHandler errorHandler = new ResponseErrorHandler() {
-            @Override
-            public boolean hasError(ClientHttpResponse response) throws IOException {
-                return false;
-            }
-        };
-
-        // Create OpenAI API instance
-        OpenAiApi openAiApi = new OpenAiApi(
-                "https://api.openai.com/v1",
-                new ApiKey() {
-                    @Override
-                    public String getValue() {
-                        return openAiApiKey;
-                    }
-                },
-                headers,
-                "/chat/completions",
-                "/embeddings",
-                restClientBuilder,
-                webClientBuilder,
-                errorHandler
-        );
-
-        // Default model configuration
-        OpenAiChatOptions options = OpenAiChatOptions.builder()
-                .model(openAiModel)
-                .temperature(0.7)
-                .build();
-
-        // Return a fully configured ChatModel
-        return OpenAiChatModel.builder()
-                .openAiApi(openAiApi)
-                .defaultOptions(options)
-                .build();
+    public ChatClient openAiChatClient(OpenAiChatModel openAiChatModel) {
+        return ChatClient.builder(openAiChatModel)
+                .defaultOptions(ChatOptions.builder()
+                        .model(openAiModel)
+                        .temperature(0.5)
+                        .maxTokens(200)
+                        .build()).build();
     }
 
-    /**
-     * Define ChatClient bean using ChatModel
-     */
     @Bean
-    public ChatClient chatClient(ChatModel chatModel) {
-        return ChatClient.builder(chatModel).build();
+    public ChatClient geminiChatClient(VertexAiGeminiChatModel vertexAiGeminiChatModel) {
+        return ChatClient.builder(vertexAiGeminiChatModel)
+                .defaultOptions(ChatOptions.builder()
+                        .model(vertexAiGeminiModel)
+                        .temperature(0.5)
+                        .maxTokens(200)
+                        .build()).build();
     }
 }

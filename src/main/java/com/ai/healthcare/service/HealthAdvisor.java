@@ -2,6 +2,7 @@ package com.ai.healthcare.service;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.ChatOptions;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +11,15 @@ public class HealthAdvisor {
     @Value("${spring.ai.openai.chat.option.model}")
     private String openAiModel;
 
-    private final ChatClient chatClient;
+    private final ChatClient openAi;
+    private final ChatClient gemini;
 
-    public HealthAdvisor(ChatClient chatClient) {
-        this.chatClient = chatClient;
+    public HealthAdvisor(@Qualifier("openAiChatClient") ChatClient openAi,
+                         @Qualifier("geminiChatClient") ChatClient gemini) {
+        this.openAi = openAi;
+        this.gemini = gemini;
     }
+
 
     public String getHealthTip(String userPrompt) {
 
@@ -33,7 +38,7 @@ public class HealthAdvisor {
             """;
 
         // Use ChatClient fluent API
-        return chatClient.prompt()
+        return openAi.prompt()
                 .system(systemPrompt)
                 .user(userPrompt)
                 .options(ChatOptions.builder()
