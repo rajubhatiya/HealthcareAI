@@ -25,8 +25,8 @@ public class AIConfig {
         return ChatClient.builder(openAiChatModel)
                 .defaultOptions(ChatOptions.builder()
                         .model(openAiModel)
-                        .temperature(0.5)
-                        .maxTokens(200)
+                    //    .temperature(0.5)
+                      //  .maxTokens(200)
                         .build()).build();
     }
 
@@ -35,8 +35,8 @@ public class AIConfig {
         return ChatClient.builder(vertexAiGeminiChatModel)
                 .defaultOptions(ChatOptions.builder()
                         .model(vertexAiGeminiModel)
-                        .temperature(0.5)
-                        .maxTokens(200)
+      //                  .temperature(0.5)
+      //                  .maxTokens(200)
                         .build()).build();
     }
 }
