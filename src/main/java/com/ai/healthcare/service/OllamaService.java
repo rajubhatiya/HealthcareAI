@@ -7,41 +7,56 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+/**
+ * Service class responsible for interacting with AI models to generate content.
+ * <p>
+ * This service handles the generation of Western Union style receipts by prompting
+ * an AI model (configured via ChatClient).
+ * </p>
+ */
 @Slf4j
 @Service
 public class OllamaService {
 
-
+    // API Key for OpenAI, injected from application properties with a default value
     @Value("${OPENAI_API_KEY:NOT_FOUND}")
     private String openAiApiKey;
 
+    // The specific AI model to be used for chat completions (e.g., gpt-3.5-turbo, gpt-4)
     @Value("${spring.ai.openai.chat.option.model}")
     private String openAiModel;
 
+    // Base URL for the OpenAI API
     @Value("${openai.api.url}")
     private String apiUrl;
 
+    // The ChatClient interface for interacting with the AI service
     private final ChatClient openAi;
 
+    // RestTemplate for making HTTP requests (currently unused in the provided methods)
     private final RestTemplate restTemplate = new RestTemplate();
 
+    /**
+     * Constructor injecting the specific ChatClient bean.
+     *
+     * @param openAi The ChatClient bean qualified as 'openAiChatClient'.
+     */
     public OllamaService(@Qualifier("openAiChatClient") ChatClient openAi) {
         this.openAi = openAi;
     }
 
-
+    /**
+     * Generates a Western Union style receipt based on transaction details.
+     *
+     * @param transactionId      The unique identifier for the transaction.
+     * @param transactionRequest The request object containing sender, receiver, and amount details.
+     * @return A string containing the generated receipt text from the AI model.
+     */
     public String generateWesternUnionReceiptV1(String transactionId, TransactionRequest transactionRequest) {
+        // Construct the prompt with dynamic transaction details using String.format
         String prompt = String.format("""
                         Generate a Western Union payment receipt with the following details:
                         Money Transfer Control Number(MTCN): %s,
@@ -57,18 +72,7 @@ public class OllamaService {
                         """, WuUtilities.generateMTCN(transactionId, 5), WuUtilities.getCurrentDate(transactionId), transactionRequest.getAmountSent(), transactionRequest.getTransferFee(), transactionRequest.getSenderFirstName(), transactionRequest.getSenderLastName(), transactionRequest.getSenderAddress(),
                 transactionRequest.getReceiverName(), transactionRequest.getReceiverAddress(), transactionRequest.getReceiverContact());
 
-
-
-
-        String reqBody = String.format("""
-                {
-                    "model": "gpt-4o",
-                    "prompt": "%s",
-                    "stream": false
-                }
-                """, prompt.replace("\"", "\\\""), prompt.replace("\n", "")); // Escape quotes
-
-
+        // Call the AI model with the constructed prompt and specific options
         return openAi.prompt()
                 .user(prompt)
                 .options(ChatOptions.builder()
@@ -78,7 +82,5 @@ public class OllamaService {
                         .build())
                 .call()
                 .content();
-
-
     }
 }
