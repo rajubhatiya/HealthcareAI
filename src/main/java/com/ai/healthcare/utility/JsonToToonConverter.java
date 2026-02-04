@@ -31,9 +31,9 @@ public class JsonToToonConverter {
         return header + "\n" + rows;
     }
 
-    public static void main(String[] args) throws Exception {
+  /*  public static void main(String[] args) throws Exception {
         String json = "[{\"id\":1,\"name\":\"Alice\",\"role\":\"admin\"},{\"id\":2,\"name\":\"Bob\",\"role\":\"user\"}]";
         String toon = jsonToToon(json, "users");
         System.out.println(toon);
-    }
+    }*/
 }

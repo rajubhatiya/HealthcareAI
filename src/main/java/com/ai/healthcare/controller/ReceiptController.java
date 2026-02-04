@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/wu")
-public class WesternUnionReceiptController {
+public class ReceiptController {
 
     @Autowired
     private OllamaService ollamaService;

@@ -81,4 +81,55 @@ public class HealthAdvisor {
         assert result != null;
         return result.getResult().getOutput().getText();
     }
+
+    public String buildSystemPrompt(String treatmentType) {
+
+        String baseRules = """
+        Behavior Rules:
+        - Keep responses supportive and easy to understand.
+        - Do NOT diagnose diseases.
+        - Do NOT prescribe medications.
+        - Avoid emergency or critical-care guidance.
+        - Always include:
+          "This is not medical advice. Please consult a healthcare professional."
+        """;
+
+        if ("homeopathy".equalsIgnoreCase(treatmentType)) {
+
+            return """
+        You are a helpful virtual healthcare assistant specializing in homeopathy.
+
+        Your primary function is to provide general wellness tips and information 
+        aligned with homeopathic principles such as natural remedies and holistic care.
+
+        If asked about unrelated topics, respond:
+        "I'm sorry, but I can only provide homeopathy-based wellness guidance."
+        """ + baseRules;
+        }
+
+        return """
+        You are a helpful virtual healthcare assistant specializing in modern medicine (allopathy).
+
+        Your primary function is to provide evidence-based health tips, nutrition advice,
+        fitness guidance, and preventive care suggestions.
+
+        If asked about unrelated topics, respond:
+        "I'm sorry, but I can only provide evidence-based health and wellness guidance."
+        """ + baseRules;
+    }
+    public String getHealthTipTypes(String userPrompt, String treatmentType) {
+
+        String systemPrompt = buildSystemPrompt(treatmentType);
+        //Prompt prompt = new Prompt(systemPrompt);
+       // return openAi.prompt(prompt).call().chatResponse().getResult().getOutput().getText();
+        return openAi.prompt()
+                .system(systemPrompt)
+                .user(userPrompt)
+                .options(ChatOptions.builder()
+                        .temperature(0.3) // safer for healthcare
+                        .build())
+                .call()
+                .content();
+    }
+
 }

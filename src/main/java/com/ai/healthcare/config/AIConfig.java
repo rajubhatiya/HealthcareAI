@@ -7,6 +7,7 @@ import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestClient;
 
 @Configuration
 public class AIConfig {
@@ -25,8 +26,8 @@ public class AIConfig {
         return ChatClient.builder(openAiChatModel)
                 .defaultOptions(ChatOptions.builder()
                         .model(openAiModel)
-                    //    .temperature(0.5)
-                      //  .maxTokens(200)
+                        //    .temperature(0.5)
+                        //  .maxTokens(200)
                         .build()).build();
     }
 
@@ -35,8 +36,17 @@ public class AIConfig {
         return ChatClient.builder(vertexAiGeminiChatModel)
                 .defaultOptions(ChatOptions.builder()
                         .model(vertexAiGeminiModel)
-      //                  .temperature(0.5)
-      //                  .maxTokens(200)
+                        //                  .temperature(0.5)
+                        //                  .maxTokens(200)
                         .build()).build();
     }
-}
+    @Bean
+    public RestClient openAiRestClient(
+            ) {
+
+        return RestClient.builder()
+                .baseUrl("https://api.openai.com/v1")
+                .defaultHeader("Authorization", "Bearer " + openAiApiKey)
+                .defaultHeader("Content-Type", "application/json")
+                .build();
+    }}

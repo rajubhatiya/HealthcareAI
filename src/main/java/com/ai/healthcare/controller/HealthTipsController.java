@@ -1,6 +1,7 @@
 package com.ai.healthcare.controller;
 
 import com.ai.healthcare.model.HealthResponse;
+import com.ai.healthcare.model.UserHealthtipPrompt;
 import com.ai.healthcare.model.UserPrompt;
 import com.ai.healthcare.service.AnagramsService;
 import com.ai.healthcare.service.HealthAdvisor;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -41,5 +43,10 @@ public class HealthTipsController {
         // Returns the list directly so Spring handles JSON serialization
         return anagramsService.groupAnagrams(ANAGRAM_INPUT);
     }
-    
+
+    @PostMapping("/healthtip")
+    public HealthResponse healthtip(@Valid @RequestBody UserHealthtipPrompt prompt) {
+        return new HealthResponse(healthAdvisor.getHealthTipTypes(prompt.getMessage(),String.valueOf(prompt.getTreatmentType())));
+    }
+
 }
