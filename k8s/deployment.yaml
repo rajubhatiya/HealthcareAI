@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: healthcare-agent
+  labels:
+    app: healthcare-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: healthcare-agent
+  template:
+    metadata:
+      labels:
+        app: healthcare-agent
+    spec:
+      containers:
+        - name: healthcare-agent
+          # This image name tag will be replaced/updated during the deployment process
+          image: gcr.io/YOUR_PROJECT_ID/healthcare-agent:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openai-api-key
+                  key: api-key
+                  optional: true
+            # Fallback if secret is not configured, though secrets are recommended
+            # - name: OPENAI_API_KEY
+            #   value: "your-key-here"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
