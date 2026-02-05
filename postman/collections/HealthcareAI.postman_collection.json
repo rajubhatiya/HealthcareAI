@@ -1,0 +1,214 @@
+{
+  "info": {
+    "_postman_id": "718bbb8d-e71d-470d-91c7-058b46854297",
+    "name": "HealthcareAI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "ask",
+      "id": "1638223f-eb29-4d9a-ac35-9a0cddcc7581",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "askWithTokenUsage",
+      "id": "87d5fc54-55ea-4113-bcab-8c9dc18e644f",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Generate Questions",
+      "id": "505ee728-859a-4cd7-a0bb-bc6dde0f7e58",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "healthtip",
+      "id": "6c6857ee-a767-4877-879d-3b7ef04cc194",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "video",
+      "id": "e06cc269-0b64-4f20-bac2-f1abfd2d4b6a",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/health/multimodel-media/video/healthy vegetarian diet",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "health",
+            "multimodel-media",
+            "video",
+            "healthy vegetarian diet"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "textToAudio",
+      "id": "c535e5a9-6519-4328-a0e0-e7a34d47beda",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "audio/mpeg"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"text\":\"Please generate a short audio tip for hydration.\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/health/textToAudio",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "health",
+            "textToAudio"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "audioToText",
+      "id": "9d2c124f-3a23-42c9-bd5f-365d96b078e5",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "text/plain"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/health/audioToText",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "health",
+            "audioToText"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ingest",
+      "id": "fe7e26bb-5526-46b0-92d3-2bc92ff8e907",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/rag/ingest",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "rag",
+            "ingest"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "query",
+      "id": "fe5a5596-1a69-4ed2-9bf4-2a2eae1ff336",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "type": "text",
+              "key": "question",
+              "value": "What protocols were used during recovery??"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8080/query?question=What protocols were used during recovery??",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "query"
+          ],
+          "query": [
+            {
+              "key": "question",
+              "value": "What protocols were used during recovery??"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
