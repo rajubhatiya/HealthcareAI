@@ -24,8 +24,8 @@ public class OpenAIVideoClient {
     private final RestClient restClient;
     private final VideoProperties properties;
 
-    public OpenAIVideoClient(RestClient restClient, VideoProperties properties) {
-        this.restClient = restClient;
+    public OpenAIVideoClient(RestClient.Builder builder, VideoProperties properties) {
+        this.restClient = builder.build();
         this.properties = properties;
     }
 

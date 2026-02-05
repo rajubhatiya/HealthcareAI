@@ -46,6 +46,19 @@
 			<artifactId>spring-ai-starter-model-vertex-ai-gemini</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-pdf-document-reader</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.openai</groupId>
 			<artifactId>openai-java</artifactId>
 			<version>4.0.0</version>
@@ -106,6 +119,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.ai.healthcare.HealthcareApplication</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
