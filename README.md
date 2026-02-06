@@ -241,4 +241,4 @@ Wait 30-60 seconds for service registration to propagate through the discovery s
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is open source project
