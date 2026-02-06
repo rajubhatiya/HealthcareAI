@@ -97,7 +97,7 @@ services:
       - postgres
     volumes:
       - uploads_data:/app/uploads
-      - ${GOOGLE_APPLICATION_CREDENTIALS:-./dummy_creds.json}:/app/credentials.json
+      - ./secrets/my-project-key..json:/app/credentials.json
 
   document-processor:
     build: ./document-processor
