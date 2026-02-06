@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+
+  gateway-service:
+    build: ../gateway-service
+    container_name: gateway-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+
+  retrieval-service:
+    build: ../retrieval-service
+    container_name: retrieval-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/vectordb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    volumes:
+      - uploads_data:/app/uploads
+
+  embedding-service:
+    build: ../embedding-service
+    container_name: embedding-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/vectordb
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+
+  document-processor:
+    build: ../document-processor
+    container_name: document-processor
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    volumes:
+      - uploads_data:/app/uploads
+
+volumes:
+  uploads_data:

@@ -1,0 +1,41 @@
+server:
+  port: 8083
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/
+
+app:
+  upload:
+    dir: "C:/Users/Admin/Downloads/ingest_data" # Configurable path for local testing
+
+management:
+  tracing:
+    sampling:
+      endpoint: http://zipkin:9411/api/v2/spans
+
+spring:
+  application:
+    name: retrieval-service
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vectordb
+    username: user
+    password: password
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+  
+openai:
+  video:
+    model: text-to-video-model
+    duration: 5
+    poll-attempts: 20
+    poll-delay-ms: 2000
