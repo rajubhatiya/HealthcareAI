@@ -44,7 +44,7 @@ public class HealthController {
         return ResponseEntity.ok(multiModelAIService.generateImage(prompt));
     }
 
-    @GetMapping("/multimodel-media/video/{prompt}")
+    @PostMapping("/multimodel-media/video/{prompt}")
     public ResponseEntity<MultiModelMediaResponse> generateVideo(@PathVariable String prompt) {
         log.info("Received request for video generation: {}", prompt);
         return ResponseEntity.ok(multiModelAIService.generateVideo(prompt));

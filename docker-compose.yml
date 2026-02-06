@@ -92,10 +92,12 @@ services:
       - SPRING_AI_OPENAI_ORGANIZATION_ID=${OPENAI_ORG_KEY}
       - SPRING_AI_OPENAI_PROJECT_ID=${OPENAI_PROJECT_ID}
       - GEMINI_PROJECT_ID=${GEMINI_PROJECT_ID}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
     depends_on:
       - postgres
     volumes:
       - uploads_data:/app/uploads
+      - ${GOOGLE_APPLICATION_CREDENTIALS:-./dummy_creds.json}:/app/credentials.json
 
   document-processor:
     build: ./document-processor

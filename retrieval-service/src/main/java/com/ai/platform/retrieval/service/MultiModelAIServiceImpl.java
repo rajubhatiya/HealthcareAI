@@ -16,11 +16,12 @@ public class MultiModelAIServiceImpl implements MultiModelAIService {
     private static final Logger log = LoggerFactory.getLogger(MultiModelAIServiceImpl.class);
 
     private final OpenAiImageModel openAiImageModel;
-    private final OpenAIVideoClient videoClient;
+    private final GeminiVideoClient geminiVideoClient;
 
-    public MultiModelAIServiceImpl(OpenAiImageModel openAiImageModel, OpenAIVideoClient videoClient) {
+    public MultiModelAIServiceImpl(OpenAiImageModel openAiImageModel,
+            GeminiVideoClient geminiVideoClient) {
         this.openAiImageModel = openAiImageModel;
-        this.videoClient = videoClient;
+        this.geminiVideoClient = geminiVideoClient;
     }
 
     @Override
@@ -45,11 +46,11 @@ public class MultiModelAIServiceImpl implements MultiModelAIService {
 
     @Override
     public MultiModelMediaResponse generateVideo(String prompt) {
-        log.info("Generating video for prompt: {}", prompt);
+        log.info("Generating video for prompt using Gemini: {}", prompt);
         try {
-            // Note: Implementation assumes OpenAIVideoClient mimics functionality
-            String videoUrl = videoClient.generateVideo(prompt);
-            log.info("Video generation successful. URL: {}", videoUrl);
+            // Using Gemini/Vertex AI for video generation
+            String videoUrl = geminiVideoClient.generateVideo(prompt);
+            log.info("Gemini Video generation successful. URL/Data: {}", videoUrl);
 
             return MultiModelMediaResponse.builder()
                     .videoUrl(videoUrl)
@@ -57,7 +58,8 @@ public class MultiModelAIServiceImpl implements MultiModelAIService {
                     .build();
 
         } catch (Exception e) {
-            log.error("Video generation service failed for prompt: " + prompt, e);
+            log.error("Gemini Video generation failed for prompt: " + prompt, e);
+            // Optional: fallback to OpenAI if needed, but for now reporting failure
             return MultiModelMediaResponse.builder()
                     .videoStatus("FAILED")
                     .build();

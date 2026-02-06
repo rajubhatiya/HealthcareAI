@@ -39,3 +39,12 @@ openai:
     duration: 5
     poll-attempts: 20
     poll-delay-ms: 2000
+gemini:
+  video:
+    project-id: ${GEMINI_PROJECT_ID:healthcare-agent-project}
+    location: us-central1
+    model: "imagen-3.0-generate-001" # Check availability or use appropriate model
+    poll-attempts: 20
+    poll-delay-ms: 5000
+  chat:
+    enabled: false
