@@ -36,4 +36,7 @@ build/
 ### VS Code ###
 .vscode/
 .env
+dummy_creds.json
+sample_service_account_key.json
+secrets/
 secrets/
